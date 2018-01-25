@@ -10,7 +10,7 @@ public class Dispatcher {
 	
 	private static final Logger LOG = LoggerFactory.getLogger(Dispatcher.class);
 
-	public void getByRole(Role role, Long time) {
+	public void takeCall(Role role, Long time) {
 		switch (role) {
 		case EMPLOYEE:
 			if (!QueueManager.MAP_QUEUE.get(Role.EMPLOYEE).isEmpty()) {
