@@ -4,10 +4,6 @@ Reto JAVA
 
 ## MODELOS
 
-![alt text](https://raw.githubusercontent.com/ewatemberg/almundo-backend-exercise/master/Diseño.jpg)
-
-![alt text](https://raw.githubusercontent.com/ewatemberg/almundo-backend-exercise/master/Diagrama.jpg)
-
 
 ## EXPLICACIÓN
 
