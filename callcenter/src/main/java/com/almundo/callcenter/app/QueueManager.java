@@ -39,29 +39,30 @@ public class QueueManager {
 		
 		LOG.info("Asignando llamada con id : {}",call.getId());
 		
-		for (Entry<Role, Queue<Call>> entry : MAP_QUEUE.entrySet()) {
-			Role key = entry.getKey();
-		    Queue<Call> value = entry.getValue();
+		for (Entry<Role, Queue<Call>> entryQueue : MAP_QUEUE.entrySet()) {
+			Role key = entryQueue.getKey();
+		    Queue<Call> value = entryQueue.getValue();
 		    try {
 		    	call.setInCharge(key);
 		    	value.add(call);
 		    	LOG.info("Llamada con id : {} asignada a  {}  ",call.getId(),key.name());
 		    	assignConsumer(key);
 		    	break;
-		    	
 			} catch (IllegalStateException ex) {
 				call.setInCharge(null);
 				LOG.info("Todos los  {} ocupados para atender la llamada {} ",key.name(),call.getId());
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
+			} 
 		}
 	}
 
-	private static void assignConsumer(Role role) throws InterruptedException {
+	private static void assignConsumer(Role role){
 		final ExecutorService exService = Executors.newSingleThreadExecutor();
 		exService.submit(new ConsumerCall(new Dispatcher(),role));
-		exService.awaitTermination(30, TimeUnit.SECONDS);
+		try {
+			exService.awaitTermination(3, TimeUnit.SECONDS);
+		} catch (InterruptedException e) {
+			LOG.error("Error lanzando hilo consumidor ",e);
+		}
 		exService.shutdown();
 	}
 }
