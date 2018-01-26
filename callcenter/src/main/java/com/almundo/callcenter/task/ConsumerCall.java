@@ -14,6 +14,10 @@ public class ConsumerCall implements Runnable {
 		this.role = role;
 	}
 	
+	/**
+	 * Toma un numero aleatorio y delega al dispatcher el proceso de atencion de la llamada.
+	 */
+	@Override
 	public void run() {
 		Long time = RandomUtil.asignRandomTimeToTask(); 
 		this.dispatcher.takeCall(role, time);

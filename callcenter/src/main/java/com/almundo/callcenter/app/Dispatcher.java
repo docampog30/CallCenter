@@ -13,30 +13,29 @@ public class Dispatcher {
 	private static final Logger LOG = LoggerFactory.getLogger(Dispatcher.class);
 	public static AtomicInteger callsNumber = new AtomicInteger(0);
 
+	/**
+	 * Este metodo permite decidir por que procedimiento seguir segun el parametro role y si es de la cola ON_HOLD se vuelve a delegar para que sea asignado nuevamente
+	 * @param role
+	 * @param time
+	 */
 	public void takeCall(Role role, Long time) {
-		switch (role) {
-		case EMPLOYEE:
-			callsNumber.incrementAndGet();
-			processCall(role, time);
-			
-			break;
-		case SUPERVISOR:
-			callsNumber.incrementAndGet();
-			processCall(role, time);
-			
-			break;
-		case DIRECTOR:
-			callsNumber.incrementAndGet();
-			processCall(role, time);
-			break;
-		default:
+		
+		if(Role.ON_HOLD == role) {
 			Call call = QueueManager.MAP_QUEUE.get(Role.ON_HOLD).poll();
 			LOG.info("Siguiente llamada en cola ON_HOLD con id {} volviendo a ser encolada",call.getId());
 			this.dispatchCall(call);
-		}	
+		}else {
+			callsNumber.incrementAndGet();
+			processCall(role, time);
+		}
 	}
 
 
+	/**
+	 * Toma el mensaje de la cola y simula el tiempo de atencion de llamada
+	 * @param role
+	 * @param time
+	 */
 	private void processCall(Role role, Long time) {
 		if (!QueueManager.MAP_QUEUE.get(role).isEmpty()) {
 			Call call = QueueManager.MAP_QUEUE.get(role).poll();

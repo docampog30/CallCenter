@@ -23,9 +23,10 @@ public class App
 	
     public static void main( String[] args ) throws InterruptedException
     {
-    	LOG.info("Inicio ");
+    	LOG.info("Inicio Main");
 
 		Dispatcher dispatcher = new Dispatcher();
+		
 		ExecutorService executor = Executors.newFixedThreadPool(16);
 				
 		executor.execute(new ProducerCall(dispatcher, 1));

@@ -11,14 +11,6 @@ public class DispatcherTest {
 	private Dispatcher dispatcher = new Dispatcher();
 	
 	@Test
-	public void debeEnviarMensajeAConsumerYVerificarCorrectaAsignación(){
-		
-		Assert.assertTrue(Dispatcher.callsNumber.get() == 0);
-		dispatcher.dispatchCall(new Call(1));
-		Assert.assertTrue(Dispatcher.callsNumber.get() == 1);
-	}
-	
-	@Test
 	public void debeVerificarCorrectoConsumoEnLaCola(){
 		QueueManager.MAP_QUEUE.get(Role.EMPLOYEE).add(new Call(1));
 		Assert.assertTrue(QueueManager.MAP_QUEUE.get(Role.EMPLOYEE).size() == 1);

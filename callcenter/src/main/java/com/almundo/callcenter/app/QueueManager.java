@@ -22,6 +22,7 @@ public class QueueManager {
 	private static final Logger LOG = LoggerFactory.getLogger(QueueManager.class);
 	
 	private static Queue<Call> commonQueue = new ConcurrentLinkedQueue<>();
+	
 	private static Queue<Call> employeeQueue = new LinkedBlockingQueue<>(Constants.EMPLOYEE_NUMBER);
 	private static Queue<Call> directorQueue  = new LinkedBlockingQueue<>(Constants.DIRECTOR_NUMBER);
 	private static Queue<Call> supervisorQueue  = new LinkedBlockingQueue<>(Constants.SUPERVISOR_NUMBER);
@@ -34,6 +35,11 @@ public class QueueManager {
 		MAP_QUEUE.put(Role.SUPERVISOR, supervisorQueue);
 		MAP_QUEUE.put(Role.ON_HOLD, commonQueue);
 	}
+	
+	/**
+	 * Metodo que asigna la llamada a la cola disponible segun las reglas de negocio e invoca otro hilo para que consuma el mensaje. 
+	 * @param call
+	 */
 
 	public static void addTaskToQueue(Call call) {
 		
@@ -58,11 +64,12 @@ public class QueueManager {
 	private static void assignConsumer(Role role){
 		final ExecutorService exService = Executors.newSingleThreadExecutor();
 		exService.submit(new ConsumerCall(new Dispatcher(),role));
+		exService.shutdown();
 		try {
 			exService.awaitTermination(3, TimeUnit.SECONDS);
 		} catch (InterruptedException e) {
 			LOG.error("Error lanzando hilo consumidor ",e);
 		}
-		exService.shutdown();
+		
 	}
 }
