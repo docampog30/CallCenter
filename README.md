@@ -19,6 +19,13 @@ Para una evolución de la evolución se podría plantear el tema de colas con JE
 
 Se generan test a las clases/metodos que se consideran mas importantes dentro de la aplicación y test solicitado en los requerimientos,
 
+## Extras/Plus
+Dar alguna solución sobre qué pasa con una llamada cuando no hay ningún empleado libre
+Dar alguna solución sobre qué pasa con una llamada cuando entran más de 10 llamadas concurrentes.
+	
+Existe una cola sin limite que maneja estos mensajes los cuales se vuelven a reintentar asignar a algun empleado cuando esté libre. 
+	
+
 
 ## RUN
 
